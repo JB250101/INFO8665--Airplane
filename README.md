@@ -38,8 +38,26 @@ Team Members
 
 ---
 
-## **Folder Structure**
-├── data-collection/ # Contains datasets used for training and testing ├── dev/ # Development scripts and helper modules ├── documentation/ # Documentation files ├── orchestrator.ipynb # Main orchestration notebook ├── README.md # Project documentation └── trained-models/ # Trained models stored by version
+![alt text](image.png)
+
+---
+## Folder structure
+├── data-collection/        # Contains datasets used for training and testing
+├── dev/                    # Development scripts and helper modules
+├── documentation/          # Documentation files
+├── orchestrator.ipynb      # Main orchestration notebook
+├── README.md               # Project documentation
+└── trained-models/         # Trained models stored by version
+
+
+---
+## **Environment Setup**
+To replicate the development environment:
+1. **Clone the repository**:  
+   ```bash
+   git clone https://github.com/JB250101/INFO8665--Airplane.git
+   cd INFO8665--Airplane
+
 
 
 ## Directory Structure
