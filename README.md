@@ -41,16 +41,7 @@ Team Members
 ![alt text](image.png)
 
 ---
-## Folder structure
-├── data-collection/        # Contains datasets used for training and testing
-├── dev/                    # Development scripts and helper modules
-├── documentation/          # Documentation files
-├── orchestrator.ipynb      # Main orchestration notebook
-├── README.md               # Project documentation
-└── trained-models/         # Trained models stored by version
 
-
----
 ## **Environment Setup**
 To replicate the development environment:
 1. **Clone the repository**:  
@@ -66,21 +57,48 @@ To replicate the development environment:
     - To activate the virtual environment, use the appropriate command based on your system:
       - **Windows**: `.\airplanevenv\Scripts\activate`
       - **Mac/Linux**: `source airplanevenv/bin/activate`
-
-2. **data/**:
+    
+    **data/**:
     - This directory contains the dataset(s) required for analysis.
     - Place any CSV, JSON, or other data files within this directory.
 
-3. **.gitignore**:
+    **.gitignore**:
     - A configuration file used to exclude certain files and directories from being tracked by Git. 
     - Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
 
-4. **airplane.ipynb**:
+    **airplane.ipynb**:
     - The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
     - Open this using Jupyter Notebook or Visual Studio Code to explore the project.
 
-5. **README.md**:
+    **README.md**:
     - This project documentation file explains the structure, setup instructions, and project details.
+
+    **docs**:
+    - This directory contains all the html pages, document report for every sprints
+
+2. **Install dependencies:** 
+    -   Python version: 3.x
+    -   Libraries: Install dependencies via:
+        `pip install -r requirements.txt`
+
+3. **Azure DevOps Integration:**
+    Follow Azure Boards integration setup guidelines as outlined in [Azure Boards Link](https://dev.azure.com/Jburman0180/Airplane%20Fare%20Price/).
+
+---
+
+# Downloadables
+
+-   **Training dataset:** Available in the `data-collection/` folder.
+-   **Pre-trained models:** Stored in `trained-models/`.
+
+# Pre-requisites
+-   Python 3.x installed on the machine.
+-   Azure DevOps configured with project access.
+-   Git installed and set up.
+
+
+
+
 
 ---
 
@@ -90,3 +108,5 @@ To replicate the development environment:
    ```bash
    git clone <repository-url>
    cd INFO8665--AIRPLANE
+
+2. Run the orchestrator file(`airplane.ipynb`)
