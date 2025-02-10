@@ -76,23 +76,23 @@ To replicate the development environment:
 ```pip freeze > requirements.txt```
 
     
-    **data/**:
-    - This directory contains the dataset(s) required for analysis.
-    - Place any CSV, JSON, or other data files within this directory.
+**data/**:
+- This directory contains the dataset(s) required for analysis.
+- Place any CSV, JSON, or other data files within this directory.
 
-    **.gitignore**:
-    - A configuration file used to exclude certain files and directories from being tracked by Git. 
-    - Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
+**.gitignore**:
+- A configuration file used to exclude certain files and directories from being tracked by Git. 
+- Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
 
-    **airplane.ipynb**:
-    - The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
-    - Open this using Jupyter Notebook or Visual Studio Code to explore the project.
+**airplane.ipynb**:
+- The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
+- Open this using Jupyter Notebook or Visual Studio Code to explore the project.
 
-    **README.md**:
-    - This project documentation file explains the structure, setup instructions, and project details.
+**README.md**:
+- This project documentation file explains the structure, setup instructions, and project details.
 
-    **docs**:
-    - This directory contains all the html pages, document report for every sprints
+**docs**:
+- This directory contains all the html pages, document report for every sprints
 
 2. **Azure DevOps Integration:**
     Follow Azure Boards integration setup guidelines as outlined in [Azure Boards Link](https://dev.azure.com/Jburman0180/Airplane%20Fare%20Price/).
