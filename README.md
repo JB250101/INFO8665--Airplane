@@ -38,31 +38,81 @@ Team Members
 
 ---
 
-## **Folder Structure**
-├── data-collection/ # Contains datasets used for training and testing ├── dev/ # Development scripts and helper modules ├── documentation/ # Documentation files ├── orchestrator.ipynb # Main orchestration notebook ├── README.md # Project documentation └── trained-models/ # Trained models stored by version
+![alt text](image.png)
+
+---
+
+## **Environment Setup**
+To replicate the development environment:
+1. **Clone the repository**:  
+   ```bash
+   git clone https://github.com/JB250101/INFO8665--Airplane.git
+   cd INFO8665--Airplane
+
 
 
 ## Directory Structure
-1. **airplanevenv/**:
-    - The virtual environment directory, where all the project-specific dependencies are installed.
-    - To activate the virtual environment, use the appropriate command based on your system:
-      - **Windows**: `.\airplanevenv\Scripts\activate`
-      - **Mac/Linux**: `source airplanevenv/bin/activate`
 
-2. **data/**:
-    - This directory contains the dataset(s) required for analysis.
-    - Place any CSV, JSON, or other data files within this directory.
+# INFO8665--AIRPLANE
 
-3. **.gitignore**:
-    - A configuration file used to exclude certain files and directories from being tracked by Git. 
-    - Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
+### Project and environment setup
 
-4. **airplane.ipynb**:
-    - The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
-    - Open this using Jupyter Notebook or Visual Studio Code to explore the project.
+1. Move to project directory "INFO8665" where you have cloned the project
+2. Create virtual environment with name **"airplanevenve"**
+    - Make sure ```python --version``` is set to **12.3.6** in your system
+    - ```python -m venv airplanevenve```
+3. Activate environment
+    - ```.\airplanevenve\Scripts\Activate.ps1```
+    - In case you are using visual studio code, Choose the environment from menu as active environment
+4. Install packages mentioned in **"requirements.txt"**
+    - ```pip install -r requirements.txt```
+5. Select **"airplanevenve"** environment in your IDE
+6. Create folder named **"dataset"** in your project directory
+7. Move all files downloaded from Kaggle dataset in the "Dataset" Directory
 
-5. **README.md**:
-    - This project documentation file explains the structure, setup instructions, and project details.
+
+### Update Requirements.txt file once installing new packages
+
+```pip freeze > requirements.txt```
+
+    
+**data/**:
+- This directory contains the dataset(s) required for analysis.
+- Place any CSV, JSON, or other data files within this directory.
+
+**.gitignore**:
+- A configuration file used to exclude certain files and directories from being tracked by Git. 
+- Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
+
+**airplane.ipynb**:
+- The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
+- Open this using Jupyter Notebook or Visual Studio Code to explore the project.
+
+**README.md**:
+- This project documentation file explains the structure, setup instructions, and project details.
+
+**docs**:
+- This directory contains all the html pages, document report for every sprints
+
+2. **Azure DevOps Integration:**
+    Follow Azure Boards integration setup guidelines as outlined in [Azure Boards Link](https://dev.azure.com/Jburman0180/Airplane%20Fare%20Price/).
+
+---
+
+# Downloadables
+
+-   **Training dataset:** Available in the `data/` folder.
+    You can download dataset from [Kagglel](https://www.kaggle.com/datasets/shubhamsarafo/flight-price)
+-   **Pre-trained models:** Stored in `models/`.
+
+# Pre-requisites
+-   Python 3.x installed on the machine.
+-   Azure DevOps configured with project access.
+-   Git installed and set up.
+
+
+
+
 
 ---
 
@@ -72,3 +122,5 @@ Team Members
    ```bash
    git clone <repository-url>
    cd INFO8665--AIRPLANE
+
+2. Run the orchestrator file(`airplane.ipynb`)
