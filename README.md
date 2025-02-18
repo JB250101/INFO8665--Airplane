@@ -49,7 +49,15 @@ To replicate the development environment:
    git clone https://github.com/JB250101/INFO8665--Airplane.git
    cd INFO8665--Airplane
 
+# 🚀 **Flight Fare Prediction API (MLOps Use Case)**
 
+This repository contains a **Flask-based MLOps pipeline** for predicting flight fares using Machine Learning. It consists of **three microservices**:
+
+1. **Preprocessing Service** (`preprocessing.py`) - Cleans & encodes input data.
+2. **Training Service** (`train_service.py`) - Trains the flight fare prediction model.
+3. **Prediction Service** (`prediction_service.py`) - Predicts flight fares using the trained model.
+
+---
 
 ## Directory Structure
 
@@ -123,4 +131,78 @@ To replicate the development environment:
    git clone <repository-url>
    cd INFO8665--AIRPLANE
 
-2. Run the orchestrator file(`airplane.ipynb`)
+2. ## ** Install Required Dependencies**
+    Before running the services, install the required Python packages:
+
+```bash
+pip install flask pandas scikit-learn joblib requests openpyxl
+```
+
+3. ## Run Preprocessing Service
+    This service processes flight details into a model-friendly format.
+
+    ```python preprocessing.py```
+
+    ✅ Runs on: ```http://127.0.0.1:5002/preprocess```
+
+
+    Example Request:
+```bash 
+   {
+        "Date_of_Journey": "12/03/2024",
+        "Airline": "Indigo",
+        "Source": "Delhi",
+        "Destination": "Mumbai"
+    }
+```
+
+    Example Response:
+```bash
+    {
+    "status": "Success",
+    "processed_data":[[2.42, 0.04, 3.09, 12, 3]]
+    }
+```
+4. ## Run Training Service:
+
+This service trains the model using the dataset and saves it.
+
+```bash
+    python train_service.py
+```
+Runs on: ```http://127.0.0.1:5003/train```
+
+    Example Response:
+
+    ```bash
+        {
+    "status": "Success",
+    "message": "Model trained successfully!",
+    "MAE": 1550.92
+        }
+    ```
+
+5. ## Run Prediction Service:
+This service predicts flight fares for a given input.
+
+```bash
+    python prediction_service.py
+```
+
+Runs on: ```http://127.0.0.1:5004/predict```
+
+ Example Request:
+ ```bash
+    {
+    "processed_data": [[2.42, 0.04, 3.09, 12, 3]]
+    }
+ ```
+
+ Example Response:
+
+ ```bash
+    {
+    "status": "Success",
+    "predicted_price": [7740.42]
+    }
+ ```
