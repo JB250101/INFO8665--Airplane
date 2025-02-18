@@ -68,8 +68,8 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
+# # Sphinx documentation
+# docs/_build/
 
 # PyBuilder
 .pybuilder/
@@ -170,4 +170,3 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-airplanevenve/
