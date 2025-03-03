@@ -3,8 +3,12 @@ import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, confusion_matrix, classification_report
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.utils.class_weight import compute_sample_weight
 import os
+import numpy as np
+
 
 app = Flask(__name__)
 
@@ -47,19 +51,51 @@ def train_model():
         X, y = load_data()
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Train the model
-        model = RandomForestRegressor(n_estimators=100, random_state=42)
-        model.fit(X_train, y_train)
+        # Hyperparameter tuning for the best RandomForest model
+        param_grid = {
+            'n_estimators': [100, 200, 300],
+            'max_depth': [10, 15, 20, None],
+            'min_samples_split': [2, 5, 10],
+            'min_samples_leaf': [1, 2, 4]
+        }
+        
+        rf_model = RandomForestRegressor(random_state=42)
+        rf_search = RandomizedSearchCV(rf_model, param_grid, n_iter=10, cv=5, scoring='neg_mean_absolute_error', n_jobs=-1, random_state=42)
+        rf_search.fit(X_train, y_train)
+
+        # Get the best model
+        best_rf_model = rf_search.best_estimator_
+
+        # Apply sample weighting
+        sample_weights = compute_sample_weight("balanced", y_train)
+        best_rf_model.fit(X_train, y_train, sample_weight=sample_weights)
         
         # Evaluate the model
-        y_pred = model.predict(X_test)
+        y_pred = best_rf_model.predict(X_test)
         mae = mean_absolute_error(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+        
+        # Convert continuous predictions to categorical labels for classification report & confusion matrix
+        y_test_labels = np.digitize(y_test, bins=np.histogram(y_test, bins=5)[1])
+        y_pred_labels = np.digitize(y_pred, bins=np.histogram(y_pred, bins=5)[1])
+        conf_matrix = confusion_matrix(y_test_labels, y_pred_labels).tolist()
+        class_report = classification_report(y_test_labels, y_pred_labels, output_dict=True)
+    
         
         # Save the trained model
         model_path = "models/flight_fare_model.pkl"
-        joblib.dump(model, model_path)
+        joblib.dump(best_rf_model, model_path)
         
-        return jsonify({"status": "Success", "message": "Model trained successfully!", "MAE": mae})
+        return jsonify({
+            "status": "Success",
+            "message": "Model trained successfully!",
+            "MAE": mae,
+            "MSE": mse,
+            "R2_Score": r2,
+            "Confusion_Matrix": conf_matrix,
+            "Classification_Report": class_report
+        })
     
     except Exception as e:
         return jsonify({"status": "Error", "message": str(e)})
