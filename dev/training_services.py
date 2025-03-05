@@ -25,23 +25,45 @@ def load_data():
     df['Journey_month'] = pd.to_datetime(df['Date_of_Journey'], dayfirst=True).dt.month
     df.drop(columns=['Date_of_Journey', 'Route', 'Dep_Time', 'Arrival_Time'], inplace=True, errors='ignore')
     
+    # Convert "Duration" to Total Minutes
+    def convert_duration(duration):
+        hours, minutes = 0, 0
+        if 'h' in duration:
+            hours = int(duration.split('h')[0].strip())
+        if 'm' in duration:
+            minutes = int(duration.split('m')[0].split()[-1].strip())
+        return hours * 60 + minutes
+
+    df['Duration'] = df['Duration'].apply(convert_duration)
+
+    # Encode "Total Stops" as an integer (e.g., "2 stops" → 2, "non-stop" → 0)
+    df['Total_Stops'] = df['Total_Stops'].replace({
+        "non-stop": 0, "1 stop": 1, "2 stops": 2, "3 stops": 3, "4 stops": 4
+    })
+    
     # Load Encoders
     encoder_airline = joblib.load("models/encoder_airline.pkl")
     encoder_source = joblib.load("models/encoder_source.pkl")
     encoder_destination = joblib.load("models/encoder_destination.pkl")
+    encoder_route = joblib.load("models/encoder_route.pkl")
+    encoder_additional_info = joblib.load("models/encoder_additional_info.pkl")
     scaler = joblib.load("models/scaler.pkl")
     
     # Encode categorical variables
     df['Airline'] = df['Airline'].map(lambda x: encoder_airline.transform([x])[0] if x in encoder_airline.classes_ else encoder_airline.transform(["Unknown"])[0])
     df['Source'] = df['Source'].map(lambda x: encoder_source.transform([x])[0] if x in encoder_source.classes_ else encoder_source.transform(["Unknown"])[0])
     df['Destination'] = df['Destination'].map(lambda x: encoder_destination.transform([x])[0] if x in encoder_destination.classes_ else encoder_destination.transform(["Unknown"])[0])
-    
+    df['Route'] = df['Route'].map(lambda x: encoder_route.transform([x])[0] if x in encoder_route.classes_ else encoder_route.transform(["Unknown"])[0])
+    df['Additional_Info'] = df['Additional_Info'].map(lambda x: encoder_additional_info.transform([x])[0] if x in encoder_additional_info.classes_ else encoder_additional_info.transform(["Unknown"])[0])
+
     # Scaling
-    scaled_features = scaler.transform(df[['Airline', 'Source', 'Destination']])
-    df[['Airline', 'Source', 'Destination']] = scaled_features
+    scaled_features = scaler.transform(df[['Airline', 'Source', 'Destination', 'Route', 'Total_Stops', 'Duration', 'Additional_Info']])
+    df[['Airline', 'Source', 'Destination', 'Route', 'Total_Stops', 'Duration', 'Additional_Info']] = scaled_features
     
     # Define target variable
-    X = df[['Airline', 'Source', 'Destination', 'Journey_day', 'Journey_month']]
+    X = df[['Airline', 'Source', 'Destination', 'Route', 'Duration', 'Total_Stops', 
+            'Additional_Info', 'Journey_day', 'Journey_month', 'Arrival_Time_hour', 
+            'Arrival_Time_minute', 'Dep_Time_hour', 'Dep_Time_minute']]
     y = df['Price']
     return X, y
 
