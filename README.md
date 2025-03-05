@@ -245,9 +245,10 @@ Feedback: ```GET http://localhost:5006/submit_feedback```
 ---
 
 Future Work
-Implement real-time data collection to keep the model updated.
-Enhance the model by incorporating additional features.
-Develop a user-friendly front-end interface for easier interaction.
+
+- Implement real-time data collection to keep the model updated.
+- Enhance the model by incorporating additional features.
+- Develop a user-friendly front-end interface for easier interaction.
 
 
 
