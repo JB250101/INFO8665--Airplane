@@ -228,12 +228,19 @@ Monitoring & Feedback Service (Upcoming):
 Each service exposes an API endpoint:
 
 Data Collection: ```POST http://localhost:5001/collect```
+
 Preprocessing: ```POST http://localhost:5002/preprocess```
+
 Feature Engineering: ```POST http://localhost:5003/feature_engineering```
+
 Training: ```POST http://localhost:5004/train```
+
 Inference: ```POST http://localhost:5005/predict```
+
 Monitoring: ```POST http://localhost:5006/log_prediction```
-Feedback: ```GET http://localhost:5006/submit_feedback ```
+
+Feedback: ```GET http://localhost:5006/submit_feedback```
+
 
 ---
 
