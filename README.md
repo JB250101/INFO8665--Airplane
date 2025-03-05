@@ -147,6 +147,7 @@ pip install flask pandas scikit-learn joblib requests openpyxl
 
 
     Example Request:
+   
 ```bash 
    {
         "Date_of_Journey": "12/03/2024",
@@ -157,6 +158,7 @@ pip install flask pandas scikit-learn joblib requests openpyxl
 ```
 
     Example Response:
+    
 ```bash
     {
     "status": "Success",
@@ -192,6 +194,7 @@ This service predicts flight fares for a given input.
 Runs on: ```http://127.0.0.1:5004/predict```
 
  Example Request:
+ 
  ```bash
     {
     "processed_data": [[2.42, 0.04, 3.09, 12, 3]]
