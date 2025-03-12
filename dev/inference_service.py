@@ -72,6 +72,14 @@ def predict():
         if error:
             return jsonify({"status": "Error", "message": error})
 
+        # Debug: Print expected and actual feature orders
+        print("Expected feature order by model:", model.feature_names_in_)
+        print("Processed input feature order:", processed_input.columns.tolist())
+
+        # Reorder input features if necessary
+        expected_order = model.feature_names_in_
+        processed_input = processed_input[expected_order]
+
         # Predict
         prediction = model.predict(processed_input)
         predicted_price = round(prediction[0], 2)
