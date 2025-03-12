@@ -27,7 +27,7 @@ def log_prediction():
         df = pd.read_csv(LOG_FILE)
 
         # Append new prediction to log
-        df = df.append(data, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
         df.to_csv(LOG_FILE, index=False)
 
         return jsonify({"status": "Success", "message": "Prediction logged successfully!"})
