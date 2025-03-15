@@ -63,4 +63,4 @@ def feature_engineering():
         return jsonify({"status": "Error", "message": str(e)})
 
 if __name__ == "__main__":
-    app.run(port=5003, debug=True)
+    app.run(host="0.0.0.0", port=5003, debug=True)
