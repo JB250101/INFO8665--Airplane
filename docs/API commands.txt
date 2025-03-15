@@ -1,0 +1,61 @@
+POST http://127.0.0.1:5001/preprocess
+{
+    "file_name": "collected_airfare_data.csv"
+}
+
+POST http://127.0.0.1:5002/preprocess
+{
+    "file_name": "collected_airfare_data.csv"
+}
+
+POST http://127.0.0.1:5003/feature_engineering
+{
+    "file_name": "preprocessed_airfare_data.csv"
+}
+
+POST http://127.0.0.1:5004/train
+
+POST http://127.0.0.1:5005/predict
+{
+  "Airline": "IndiGo",
+  "Source": "Delhi",
+  "Destination": "Banglore",
+  "Route": "DEL → BLR",
+  "Total_Stops": "non-stop",
+  "Additional_Info": "No info",
+  "Duration": 120,
+  "Journey_day": 10,
+  "Journey_month": 5,
+  "Dep_Time_hour": 14,
+  "Dep_Time_minute": 30,
+  "Arrival_Time_hour": 16,
+  "Arrival_Time_minute": 30
+}
+
+POST http://127.0.0.1:5006/log_prediction
+{
+  "Airline": "IndiGo",
+  "Source": "Delhi",
+  "Destination": "Bangalore",
+  "Route": "DEL → BLR",
+  "Duration": 120,
+  "Total_Stops": "non-stop",
+  "Additional_Info": "No info",
+  "Journey_day": 10,
+  "Journey_month": 5,
+  "Dep_Time_hour": 14,
+  "Dep_Time_minute": 30,
+  "Arrival_Time_hour": 16,
+  "Arrival_Time_minute": 30,
+  "Predicted_Price": 10500.16,
+  "Actual_Price": 10000,
+  "User_Feedback": "quite high"
+}
+
+POST http://127.0.0.1:5006/submit_feedback
+{
+  "id": 0,
+  "feedback": "The prediction was very close to the actual price!"
+}
+
+GET http://127.0.0.1:5006/get_logs
