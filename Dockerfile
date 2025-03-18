@@ -8,6 +8,7 @@ WORKDIR /INFO8665--AIRPLANE
 COPY requirements.txt requirements.txt
 
 # Install dependencies
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install Supervisor to manage multiple services
@@ -20,7 +21,7 @@ COPY . .
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose all required ports
-EXPOSE 5000 5001 5002 5003 5004 5005 5006
+EXPOSE 5000 5001 5002 5003 5004 5005 5006 8501
 
 # Start Supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

@@ -8,7 +8,7 @@ st.write("🔄 Streamlit app started!")  # Debugging Log
 def get_prediction(input_data):
     try:
         st.write("📡 Sending data for prediction...", input_data)  # Debug log
-        response = requests.post("http://localhost:5005/predict", json=input_data)
+        response = requests.post("http://127.0.0.1:5005/predict", json=input_data)
         st.write(f"🟢 Response Status: {response.status_code}")  # Debug log
         if response.status_code == 200:
             return response.json()
@@ -48,10 +48,30 @@ if st.sidebar.button("Predict Fare"):
         "Arrival_Time_hour": arrival_time_hour,
         "Arrival_Time_minute": arrival_time_minute
     }
-    result = get_prediction(input_data)
-    if result["status"] == "Success":
+    
+    # Step 1: Send input to preprocessing service
+    st.write("🔄 Sending input to Preprocessing...")
+    preprocess_response = requests.post("http://localhost:5002/preprocess", json={"file_name": "collected_airfare_data.csv"})
+    st.write("✅ Preprocessing Done:", preprocess_response.json())
+
+    # Step 2: Send processed data to feature engineering service
+    st.write("🔄 Sending data to Feature Engineering...")
+    feature_response = requests.post("http://localhost:5003/feature_engineering", json={"file_name": "preprocessed_airfare_data.csv"})
+    st.write("✅ Feature Engineering Done:", feature_response.json())
+
+    # Step 3: Train the model (only if necessary)
+    st.write("🔄 Training the Model...")
+    train_response = requests.post("http://localhost:5004/train")
+    st.write("✅ Model Training Done:", train_response.json())
+
+    # Step 4: Send final processed input for prediction
+    st.write("📡 Sending data for prediction...")
+    predict_response = requests.post("http://localhost:5005/predict", json=input_data)
+
+    if predict_response.status_code == 200:
+        result = predict_response.json()
         st.success(f"Predicted Price: ₹{result['predicted_price']}")
     else:
-        st.error(result["message"])
+        st.error(f"❌ Prediction Failed: {predict_response.json()}")
 
 st.write("✅ Ready for predictions!")
