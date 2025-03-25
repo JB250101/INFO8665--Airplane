@@ -1,36 +1,43 @@
+import os
+import logging
 import streamlit as st
 import requests
 import pandas as pd
 
-st.write("🔄 Streamlit app started!")  # Debugging Log
+# ✅ Set up logging
+logger = logging.getLogger("StreamlitDashboard")
+logger.setLevel(logging.INFO)
 
-# Function to get fare prediction from the inference API
-def get_prediction(input_data):
-    try:
-        st.write("📡 Sending data for prediction...", input_data)  # Debug log
-        response = requests.post("http://127.0.0.1:5005/predict", json=input_data)
-        st.write(f"🟢 Response Status: {response.status_code}")  # Debug log
-        if response.status_code == 200:
-            return response.json()
-    except Exception as e:
-        st.error(f"❌ Error during prediction: {e}")  # Show error in UI
-    return {"status": "Error", "message": "Prediction failed"}
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+log_path = os.path.join(log_dir, "streamlit_dashboard.log")
 
+file_handler = logging.FileHandler(log_path)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+if not logger.handlers:
+    logger.addHandler(file_handler)
+
+# ✅ Streamlit GUI
+st.set_page_config(page_title="Airfare Price Prediction", layout="centered")
 st.title("✈️ Airfare Price Prediction")
-st.sidebar.header("Flight Details")
 
-# User Inputs
-airline = st.sidebar.text_input("Airline", "IndiGo")
-source = st.sidebar.text_input("Source", "Delhi")
-destination = st.sidebar.text_input("Destination", "Bangalore")
+# Input form
+st.sidebar.header("Flight Details")
+airline = st.sidebar.selectbox("Airline", ["IndiGo", "Air India", "SpiceJet"])
+source = st.sidebar.selectbox("Source", ["Delhi", "Mumbai", "Bangalore", "Cochin"])
+destination = st.sidebar.selectbox("Destination", ["Delhi", "Mumbai", "Bangalore", "Cochin"])
 date_of_journey = st.sidebar.date_input("Date of Journey")
-duration = st.sidebar.number_input("Duration (minutes)", min_value=30, max_value=1500, step=10)
-total_stops = st.sidebar.selectbox("Total Stops", ["non-stop", "1 stop", "2 stops", "3 stops", "4 stops"])
-additional_info = st.sidebar.text_input("Additional Info", "No info")
-dep_time_hour = st.sidebar.number_input("Departure Hour", min_value=0, max_value=23, step=1)
-dep_time_minute = st.sidebar.number_input("Departure Minute", min_value=0, max_value=59, step=1)
-arrival_time_hour = st.sidebar.number_input("Arrival Hour", min_value=0, max_value=23, step=1)
-arrival_time_minute = st.sidebar.number_input("Arrival Minute", min_value=0, max_value=59, step=1)
+duration = st.sidebar.number_input("Duration (minutes)", min_value=0)
+
+total_stops = st.sidebar.selectbox("Total Stops", ["non-stop", "1 stop", "2 stops"])
+additional_info = st.sidebar.selectbox("Additional Info", ["No info", "In-flight meal included"])
+
+dep_time_hour = st.sidebar.number_input("Departure Hour", min_value=0, max_value=23)
+dep_time_minute = st.sidebar.number_input("Departure Minute", min_value=0, max_value=59)
+arrival_time_hour = st.sidebar.number_input("Arrival Hour", min_value=0, max_value=23)
+arrival_time_minute = st.sidebar.number_input("Arrival Minute", min_value=0, max_value=59)
 
 if st.sidebar.button("Predict Fare"):
     input_data = {
@@ -48,30 +55,35 @@ if st.sidebar.button("Predict Fare"):
         "Arrival_Time_hour": arrival_time_hour,
         "Arrival_Time_minute": arrival_time_minute
     }
-    
-    # Step 1: Send input to preprocessing service
-    st.write("🔄 Sending input to Preprocessing...")
-    preprocess_response = requests.post("http://localhost:5002/preprocess", json={"file_name": "collected_airfare_data.csv"})
-    st.write("✅ Preprocessing Done:", preprocess_response.json())
 
-    # Step 2: Send processed data to feature engineering service
-    st.write("🔄 Sending data to Feature Engineering...")
-    feature_response = requests.post("http://localhost:5003/feature_engineering", json={"file_name": "preprocessed_airfare_data.csv"})
-    st.write("✅ Feature Engineering Done:", feature_response.json())
+    try:
+        st.write("🔄 Sending input to Preprocessing...")
+        logger.info("Calling preprocessing service...")
+        pre_res = requests.post("http://localhost:5002/preprocess", json={"file_name": "collected_airfare_data.csv"})
+        st.success(pre_res.json())
 
-    # Step 3: Train the model (only if necessary)
-    st.write("🔄 Training the Model...")
-    train_response = requests.post("http://localhost:5004/train")
-    st.write("✅ Model Training Done:", train_response.json())
+        st.write("🔄 Sending data to Feature Engineering...")
+        logger.info("Calling feature engineering service...")
+        fe_res = requests.post("http://localhost:5003/feature_engineering", json={"file_name": "preprocessed_airfare_data.csv"})
+        st.success(fe_res.json())
 
-    # Step 4: Send final processed input for prediction
-    st.write("📡 Sending data for prediction...")
-    predict_response = requests.post("http://localhost:5005/predict", json=input_data)
+        st.write("🔄 Training the Model...")
+        logger.info("Calling training service...")
+        train_res = requests.post("http://localhost:5004/train")
+        st.success(train_res.json())
 
-    if predict_response.status_code == 200:
-        result = predict_response.json()
-        st.success(f"Predicted Price: ₹{result['predicted_price']}")
-    else:
-        st.error(f"❌ Prediction Failed: {predict_response.json()}")
+        st.write("📡 Sending data for prediction...")
+        logger.info(f"Sending input to prediction service: {input_data}")
+        pred_res = requests.post("http://localhost:5005/predict", json=input_data)
 
-st.write("✅ Ready for predictions!")
+        if pred_res.status_code == 200:
+            result = pred_res.json()
+            logger.info(f"Prediction successful: ₹{result['predicted_price']}")
+            st.success(f"Predicted Price: ₹{result['predicted_price']}")
+        else:
+            logger.warning("Prediction request failed.")
+            st.error("Prediction failed. Please check inputs or backend services.")
+
+    except Exception as e:
+        logger.exception("Error during prediction process.")
+        st.error(f"❌ Error: {str(e)}")

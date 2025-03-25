@@ -1,69 +1,61 @@
-from flask import Flask, request, jsonify
-import pandas as pd
 import os
+import logging
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Define file to store logs
-LOG_FILE = "data/inference_logs.csv"
-os.makedirs("data", exist_ok=True)
+MONITOR_LOG_PATH = "logs/model_monitoring.log"
 
-# Ensure log file exists
-if not os.path.exists(LOG_FILE):
-    pd.DataFrame(columns=["Airline", "Source", "Destination", "Route", "Duration", "Total_Stops",
-                          "Additional_Info", "Journey_day", "Journey_month", "Dep_Time_hour", 
-                          "Dep_Time_minute", "Arrival_Time_hour", "Arrival_Time_minute", 
-                          "Predicted_Price", "Actual_Price", "User_Feedback"]
-                 ).to_csv(LOG_FILE, index=False)
+# ✅ Set up logging
+logger = logging.getLogger("MonitoringService")
+logger.setLevel(logging.INFO)
 
-# Store Inference Logs
-@app.route("/log_prediction", methods=["POST"])
-def log_prediction():
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+log_path = os.path.join(log_dir, "monitoring_service.log")
+
+file_handler = logging.FileHandler(log_path)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+if not logger.handlers:
+    logger.addHandler(file_handler)
+
+# Write feedback or logs to monitoring log file
+def log_monitoring_event(content):
+    try:
+        with open(MONITOR_LOG_PATH, "a") as log_file:
+            log_file.write(content + "\n")
+        logger.info(f"Logged monitoring event: {content[:50]}...")  # Log first 50 chars
+        return True
+    except Exception as e:
+        logger.error(f"Failed to log monitoring event: {str(e)}")
+        return False
+
+@app.route("/monitor", methods=["POST"])
+def monitor_model():
     try:
         data = request.json
-        if not data:
-            return jsonify({"status": "Error", "message": "No data received!"})
+        logger.info("Received monitoring event.")
 
-        df = pd.read_csv(LOG_FILE)
+        user_feedback = data.get("feedback", "")
+        prediction_value = data.get("prediction", "N/A")
 
-        # Append new prediction to log
-        df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
-        df.to_csv(LOG_FILE, index=False)
+        if not user_feedback:
+            logger.warning("Missing 'feedback' field in request.")
+            return jsonify({"status": "Error", "message": "Missing feedback field."})
 
-        return jsonify({"status": "Success", "message": "Prediction logged successfully!"})
+        log_line = f"Prediction: {prediction_value} | Feedback: {user_feedback}"
+        success = log_monitoring_event(log_line)
 
-    except Exception as e:
-        return jsonify({"status": "Error", "message": str(e)})
+        if not success:
+            return jsonify({"status": "Error", "message": "Failed to log monitoring event."})
 
-# Submit Feedback for a Prediction
-@app.route("/submit_feedback", methods=["POST"])
-def submit_feedback():
-    try:
-        feedback_data = request.json
-        prediction_id = feedback_data.get("id")
-        feedback = feedback_data.get("feedback")
-
-        df = pd.read_csv(LOG_FILE)
-        if prediction_id >= len(df):
-            return jsonify({"status": "Error", "message": "Invalid prediction ID!"})
-
-        # Update feedback
-        df.at[prediction_id, "User_Feedback"] = feedback
-        df.to_csv(LOG_FILE, index=False)
-
-        return jsonify({"status": "Success", "message": "Feedback submitted successfully!"})
+        logger.info("Monitoring event logged successfully.")
+        return jsonify({"status": "Success", "message": "Monitoring event logged."})
 
     except Exception as e:
-        return jsonify({"status": "Error", "message": str(e)})
-
-# Retrieve Logged Predictions
-@app.route("/get_logs", methods=["GET"])
-def get_logs():
-    try:
-        df = pd.read_csv(LOG_FILE)
-        return jsonify({"status": "Success", "logs": df.to_dict(orient="records")})
-
-    except Exception as e:
+        logger.exception("Exception in monitoring service.")
         return jsonify({"status": "Error", "message": str(e)})
 
 if __name__ == "__main__":

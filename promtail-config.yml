@@ -1,0 +1,21 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: https://logs-prod-036.grafana.net/loki/api/v1/push
+    basic_auth:
+      username: jaivburman029
+      password: YOUR_GRAFANA_API_KEY   # 🔑 Replace this with your actual Grafana API key
+
+scrape_configs:
+  - job_name: airfare-python-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          __path__: C:/Users/jaivb/Desktop/INFO8665--Airplane/logs/*.log
