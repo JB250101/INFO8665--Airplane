@@ -16,6 +16,7 @@ et_xmlfile==2.0.0
 executing==2.2.0
 Flask==3.1.0
 fonttools==4.55.8
+git-filter-repo==2.47.0
 gitdb==4.0.12
 GitPython==3.1.44
 idna==3.10
@@ -54,6 +55,7 @@ pydeck==0.9.1
 Pygments==2.19.1
 pyparsing==3.2.1
 python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
 pytz==2025.1
 pywin32==308
 pyzmq==26.2.1
