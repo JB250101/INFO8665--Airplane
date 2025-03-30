@@ -12,7 +12,7 @@ log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
 log_path = os.path.join(log_dir, "streamlit_dashboard.log")
 
-file_handler = logging.FileHandler(log_path)
+file_handler = logging.FileHandler(log_path, encoding="utf-8")
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 

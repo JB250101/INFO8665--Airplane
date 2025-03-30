@@ -59,3 +59,12 @@ POST http://127.0.0.1:5006/submit_feedback
 }
 
 GET http://127.0.0.1:5006/get_logs
+
+Was Running in Docker?
+1️⃣ You used docker run -p 6000:5000 airfaretest → This mapped your host machine to the Docker container.
+2️⃣ When you ran docker exec -it <CONTAINER_ID> /bin/sh, you entered the container.
+3️⃣ Inside the container, you tested APIs using curl, proving that services were running inside Docker.
+4️⃣ Flask responses (like "Prediction successful!") came from your Docker container.
+
+
+

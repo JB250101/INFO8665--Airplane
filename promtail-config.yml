@@ -1,6 +1,7 @@
 server:
   http_listen_port: 9080
   grpc_listen_port: 0
+  log_level: debug
 
 positions:
   filename: C:/Users/jaivb/Desktop/INFO8665--Airplane/promtail-positions.yaml
@@ -8,8 +9,10 @@ positions:
 clients:
   - url: ${CLOUD_HOSTED_LOGS_URL}
     basic_auth:
-      username:  ${GRAFANA_USERNAME}
+      username: ${GRAFANA_USERNAME}
       password: ${GRAFANA_API_KEY}
+    external_labels:
+      org_id: "1"
 
 scrape_configs:
   - job_name: airfare_logs
@@ -18,5 +21,47 @@ scrape_configs:
           - localhost
         labels:
           job: airfare_logs
-          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\*.log
+          service: data_collection
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\data_collection.log
 
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: feature_engineering
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\feature_engineering.log
+
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: inference_service
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\inference_service.log
+
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: monitoring_service
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\monitoring_service.log
+
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: preprocessing
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\preprocessing.log
+
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: streamlit_dashboard
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\streamlit_dashboard.log
+
+      - targets:
+          - localhost
+        labels:
+          job: airfare_logs
+          service: training_services
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\training_services.log
