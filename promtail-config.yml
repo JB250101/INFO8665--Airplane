@@ -3,19 +3,20 @@ server:
   grpc_listen_port: 0
 
 positions:
-  filename: /tmp/positions.yaml
+  filename: C:/Users/jaivb/Desktop/INFO8665--Airplane/promtail-positions.yaml
 
 clients:
-  - url: https://logs-prod-036.grafana.net/loki/api/v1/push
+  - url: ${CLOUD_HOSTED_LOGS_URL}
     basic_auth:
-      username: jaivburman029
-      password: glc_eyJvIjoiMTM4MDg4NiIsIm4iOiJzdGFjay0xMjA0ODM5LWludGVncmF0aW9uLXByb210YWlscHVzaCIsImsiOiI1OE1JN1MyUG8yeDFjY2k1MDdEc0JNdDciLCJtIjp7InIiOiJwcm9kLXVzLWVhc3QtMCJ9fQ   # 🔑 Replace this with your actual Grafana API key
+      username:  ${GRAFANA_USERNAME}
+      password: ${GRAFANA_API_KEY}
 
 scrape_configs:
-  - job_name: airfare-python-logs
+  - job_name: airfare_logs
     static_configs:
       - targets:
           - localhost
         labels:
           job: airfare_logs
-          __path__: C:/Users/jaivb/Desktop/INFO8665--Airplane/logs/*.log
+          __path__: C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\*.log
+
