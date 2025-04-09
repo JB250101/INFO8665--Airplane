@@ -8,7 +8,7 @@ positions:
   C:\\Users\\jaivb\\Desktop\\INFO8665--Airplane\\logs\\training_services.log: "12322"
   C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\data_collection.log: "4347"
   C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\feature_engineering.log: "30996"
-  C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\inference_service.log: "44631"
+  C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\inference_service.log: "58711"
   C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\monitoring_service.log: "0"
   C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\preprocessing.log: "14532"
   C:\Users\jaivb\Desktop\INFO8665--Airplane\logs\streamlit_dashboard.log: "77643"
