@@ -1,6 +1,7 @@
 # INFO8665--Airplane
 Predicting flight patterns for DSS
 
+<<<<<<< HEAD
 ## Project Description
 This project focuses on building a machine learning model to predict airplane fare prices based on factors like airline, journey date, source, destination, and total stops. The project is developed collaboratively using **GitHub** and **Azure Boards** for effective project management and collaboration.
 
@@ -10,6 +11,8 @@ This project focuses on building a machine learning model to predict airplane fa
 - Collaborate efficiently using Azure Boards and GitHub workflows.
 
 
+=======
+>>>>>>> 3a50a7a0c600dee983fd9fcef302c1bbc77d14ed
 Team Members
 | Student ID | Name |
 |--------------------------------|---------------------|
@@ -19,6 +22,7 @@ Team Members
 | 8983991 | Nilkumar Patel |
 | 9041129 | Nidhi Ahir |
 
+<<<<<<< HEAD
 ## **Project Workflow Structure**
 ### **Branching Strategy**
 - Each feature or task is handled under separate **sprint branches** following a predefined branching structure:
@@ -180,6 +184,29 @@ This repository contains a **Flask-based MLOps pipeline** for predicting flight 
 
 
 
+=======
+## Directory Structure
+1. **airplanevenv/**:
+    - The virtual environment directory, where all the project-specific dependencies are installed.
+    - To activate the virtual environment, use the appropriate command based on your system:
+      - **Windows**: `.\airplanevenv\Scripts\activate`
+      - **Mac/Linux**: `source airplanevenv/bin/activate`
+
+2. **data/**:
+    - This directory contains the dataset(s) required for analysis.
+    - Place any CSV, JSON, or other data files within this directory.
+
+3. **.gitignore**:
+    - A configuration file used to exclude certain files and directories from being tracked by Git. 
+    - Common exclusions include the `airplanevenv/` directory, temporary files, and large datasets.
+
+4. **airplane.ipynb**:
+    - The main Jupyter Notebook where data analysis, preprocessing, and model training are performed.
+    - Open this using Jupyter Notebook or Visual Studio Code to explore the project.
+
+5. **README.md**:
+    - This project documentation file explains the structure, setup instructions, and project details.
+>>>>>>> 3a50a7a0c600dee983fd9fcef302c1bbc77d14ed
 
 ---
 
@@ -189,6 +216,7 @@ This repository contains a **Flask-based MLOps pipeline** for predicting flight 
    ```bash
    git clone <repository-url>
    cd INFO8665--AIRPLANE
+<<<<<<< HEAD
 
 2. ## ** Install Required Dependencies**
     Before running the services, install the required Python packages:
@@ -254,3 +282,5 @@ Future Work
 
 
 
+=======
+>>>>>>> 3a50a7a0c600dee983fd9fcef302c1bbc77d14ed
