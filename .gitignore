@@ -175,11 +175,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-<<<<<<< HEAD
 airplanevenve
 .env/
 mlruns/
 airplane
-=======
-airplanevenve/
->>>>>>> 3a50a7a0c600dee983fd9fcef302c1bbc77d14ed
