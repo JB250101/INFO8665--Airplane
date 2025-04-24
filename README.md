@@ -51,11 +51,70 @@ To replicate the development environment:
 
 # 🚀 **Flight Fare Prediction API (MLOps Use Case)**
 
-This repository contains a **Flask-based MLOps pipeline** for predicting flight fares using Machine Learning. It consists of **three microservices**:
+This repository contains a **Flask-based MLOps pipeline** for predicting flight fares using Machine Learning. It consists of **6 microservices**:
 
-1. **Preprocessing Service** (`preprocessing.py`) - Cleans & encodes input data.
-2. **Training Service** (`train_service.py`) - Trains the flight fare prediction model.
-3. **Prediction Service** (`prediction_service.py`) - Predicts flight fares using the trained model.
+1. **Data Collection Service**: Gathers airfare data from various sources.
+2. **Preprocessing Service**: Cleans and prepares raw data.
+3. **Feature Engineering Service**: Transforms data into features suitable for modeling.
+4. **Training Service**: Trains machine learning models using the processed data.
+5. **Inference Service**: Provides predictions based on new input data.
+6. **Monitoring & Feedback Service**: Logs predictions and collects user feedback to improve model performance.
+
+## Services
+
+### 1. Data Collection Service
+
+- **Purpose**: Collect airfare data from various sources.
+- **Implementation**: Reads airfare data from files or APIs.
+- **Status**: ✅ Implemented and operational.
+
+### 2. Preprocessing Service
+
+- **Purpose**: Cleans and preprocesses data before feature engineering.
+- **Implementation**:
+  - Handles missing values.
+  - Parses date and time features.
+  - Converts duration to numerical format.
+- **Status**: ✅ Implemented and operational.
+
+### 3. Feature Engineering Service
+
+- **Purpose**: Transform raw data into features suitable for modeling.
+- **Implementation**:
+  - Encodes categorical variables.
+  - Scales numerical features.
+  - Stores preprocessed features for training.
+- **Status**: ✅ Implemented and operational.
+
+### 4. Training Service
+
+- **Purpose**: Train machine learning models on the processed data.
+- **Implementation**:
+  - Splits data into training and testing sets.
+  - Performs hyperparameter tuning using `RandomizedSearchCV`.
+  - Trains a `RandomForestRegressor` model.
+  - Evaluates model performance.
+- **Status**: ✅ Implemented and operational.
+
+### 5. Inference Service
+
+- **Purpose**: Provide airfare price predictions based on new input data.
+- **Implementation**:
+  - Loads the trained model.
+  - Preprocesses input data (encoding and scaling).
+  - Returns predicted prices.
+- **Status**: ✅ Implemented and operational.
+
+### 6. Monitoring & Feedback Service
+
+- **Purpose**: Log predictions and collect user feedback to improve model performance.
+- **Implementation**:
+  - Logs each prediction along with input features.
+  - Accepts user feedback on prediction accuracy.
+  - Provides an admin interface to view logs and feedback.
+- **Status**: ⏳ Planned for future implementation.
+
+---
 
 ---
 
@@ -138,71 +197,60 @@ This repository contains a **Flask-based MLOps pipeline** for predicting flight 
 pip install flask pandas scikit-learn joblib requests openpyxl
 ```
 
-3. ## Run Preprocessing Service
-    This service processes flight details into a model-friendly format.
+3.  Run Services
+Run each service separately:
+
+Data Collection Service:
+
+    ```python data_collection.py```
+
+Preprocessing Service:
 
     ```python preprocessing.py```
+    
+Feature Engineering Service:
 
-    ✅ Runs on: ```http://127.0.0.1:5002/preprocess```
+    ```python feature_engineering.py```
+    
+Training Service:
+    
+    ```python training_services.py```
+
+Inference Service:
+
+    ```python inference_service.py```
+
+Monitoring & Feedback Service (Upcoming):
+
+    ```python monitoring_service.py```
+
+4. Access the APIs
+Each service exposes an API endpoint:
+
+Data Collection: ```POST http://localhost:5001/collect```
+
+Preprocessing: ```POST http://localhost:5002/preprocess```
+
+Feature Engineering: ```POST http://localhost:5003/feature_engineering```
+
+Training: ```POST http://localhost:5004/train```
+
+Inference: ```POST http://localhost:5005/predict```
+
+Monitoring: ```POST http://localhost:5006/log_prediction```
+
+Feedback: ```GET http://localhost:5006/submit_feedback```
 
 
-    Example Request:
-```bash 
-   {
-        "Date_of_Journey": "12/03/2024",
-        "Airline": "Indigo",
-        "Source": "Delhi",
-        "Destination": "Mumbai"
-    }
-```
+---
 
-    Example Response:
-```bash
-    {
-    "status": "Success",
-    "processed_data":[[2.42, 0.04, 3.09, 12, 3]]
-    }
-```
-4. ## Run Training Service:
+Future Work
 
-This service trains the model using the dataset and saves it.
+- Implement real-time data collection to keep the model updated.
+- Enhance the model by incorporating additional features.
+- Develop a user-friendly front-end interface for easier interaction.
 
-```bash
-    python train_service.py
-```
-Runs on: ```http://127.0.0.1:5003/train```
 
-    Example Response:
 
-    ```bash
-        {
-    "status": "Success",
-    "message": "Model trained successfully!",
-    "MAE": 1550.92
-        }
-    ```
 
-5. ## Run Prediction Service:
-This service predicts flight fares for a given input.
 
-```bash
-    python prediction_service.py
-```
-
-Runs on: ```http://127.0.0.1:5004/predict```
-
- Example Request:
- ```bash
-    {
-    "processed_data": [[2.42, 0.04, 3.09, 12, 3]]
-    }
- ```
-
- Example Response:
-
- ```bash
-    {
-    "status": "Success",
-    "predicted_price": [7740.42]
-    }
- ```

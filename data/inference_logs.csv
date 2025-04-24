@@ -1,0 +1,2 @@
+Airline,Source,Destination,Route,Duration,Total_Stops,Additional_Info,Journey_day,Journey_month,Dep_Time_hour,Dep_Time_minute,Arrival_Time_hour,Arrival_Time_minute,Predicted_Price,Actual_Price,User_Feedback
+IndiGo,Delhi,Bangalore,DEL → BLR,120,non-stop,No info,10,5,14,30,16,30,10500.16,10000,The prediction was very close to the actual price!
