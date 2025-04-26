@@ -1,6 +1,9 @@
 # INFO8665--Airplane
 Predicting flight patterns for DSS
 
+![image](https://github.com/user-attachments/assets/c0ca608c-3c7d-4185-b1cb-d164d2287cfe)
+
+
 ## Project Description
 This project focuses on building a machine learning model to predict airplane fare prices based on factors like airline, journey date, source, destination, and total stops. The project is developed collaboratively using **GitHub** and **Azure Boards** for effective project management and collaboration.
 
