@@ -118,7 +118,34 @@ This repository contains a **Flask-based MLOps pipeline** for predicting flight 
 - **Status**: ⏳ Planned for future implementation.
 
 ---
+🔧 DevOps Enhancements
 
+As part of our commitment to secure and reliable MLOps practices, we implemented the following technical enhancements:
+📊 Service Monitoring using Grafana Loki
+
+To ensure observability and traceability across all microservices:
+
+  ✅ Configured Promtail to collect logs from each microservice (e.g., preprocessing, training, inference).
+
+  ✅ Logs are centralized in Loki, a log aggregation system.
+
+  ✅ Integrated Grafana dashboards to visualize logs in real-time with time-series queries and filters.
+
+  📁 Each service writes logs to its respective file under logs/, which is mounted to Promtail using Docker.
+
+  🧠 Benefit: Enables rapid debugging, failure detection, and system health monitoring.
+
+🔐 Secret Management using GitLeaks
+
+To enforce code security and prevent credential leaks:
+
+  ✅ Integrated GitLeaks to detect hardcoded secrets and API keys.
+
+  🔄 Configured .gitleaks.toml to customize scan rules for project-specific patterns.
+
+  ✅ .gitignore excludes sensitive files (e.g., .env, credential configs).
+
+  🧠 Benefit: Ensures compliance with DevSecOps best practices by eliminating secret exposure in version control.
 ---
 
 ## Directory Structure
